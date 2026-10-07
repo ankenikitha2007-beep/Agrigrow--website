@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AgriGrow - Eco-Friendly Mulch</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f7ee;color:#173b20}
+.app{max-width:430px;margin:auto;min-height:100vh;background:#fff;box-shadow:0 0 20px #0001}
+header{background:#2f7d32;color:white;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:2}
+header h1{margin:0;font-size:22px}.screen{display:none;padding:18px 18px 90px}.screen.active{display:block}
+.hero{background:linear-gradient(135deg,#e8f5d8,#cfe8bd);padding:20px;border-radius:18px;margin-bottom:16px}
+.hero h2{margin:0 0 8px}.hero p{margin:0 0 14px}
+.btn{border:0;border-radius:12px;background:#2f7d32;color:#fff;padding:12px 16px;font-weight:bold;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tile{border:1px solid #dce7d7;border-radius:14px;padding:12px;text-align:center;background:#fbfdf9;cursor:pointer}.icon{font-size:28px;display:block;margin-bottom:5px}
+.card{background:#f8fbf5;border:1px solid #dfeadd;border-radius:16px;padding:15px;margin:12px 0}.card h3{margin:0 0 8px}
+select,input{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccd9c8;border-radius:10px;background:white}
+.stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #e1e9df}.stat:last-child{border:0}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);background:white;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:9px 4px;z-index:3}
+nav button{border:0;background:none;color:#607060;font-size:11px;cursor:pointer}nav button b{display:block;font-size:22px}nav button.active{color:#2f7d32}
+.tag{display:inline-block;background:#e2f1d7;padding:5px 9px;border-radius:20px;font-size:12px;margin:3px}
+.toast{position:fixed;bottom:78px;left:50%;transform:translateX(-50%);background:#173b20;color:#fff;padding:10px 16px;border-radius:20px;display:none;z-index:5}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1>🌱 AgriGrow</h1><span>🔔</span></header>
+
+<section id="home" class="screen active">
+<div class="hero"><h2>Hello, Farmer! 👋</h2><p>Replace plastic mulch with sustainable eco-mulch.</p><button class="btn" onclick="show('recommend')">Get Recommendation</button></div>
+<h3>Quick Access</h3>
+<div class="grid">
+<div class="tile" onclick="show('recommend')"><span class="icon">💡</span>Recommend</div>
+<div class="tile" onclick="show('types')"><span class="icon">🌾</span>Mulch Types</div>
+<div class="tile" onclick="show('monitor')"><span class="icon">💧</span>Soil Monitor</div>
+<div class="tile" onclick="show('weather')"><span class="icon">☀️</span>Weather</div>
+<div class="tile" onclick="show('impact')"><span class="icon">📈</span>Impact</div>
+<div class="tile" onclick="show('market')"><span class="icon">🛒</span>Marketplace</div>
+</div>
+<div class="card"><h3>🌱 Today's Tip</h3><p>Organic mulch can reduce evaporation and help protect soil naturally.</p></div>
+</section>
+
+<section id="recommend" class="screen">
+<h2>💡 Mulch Recommendation</h2>
+<p>Enter field details to get a suggested eco-friendly mulch.</p>
+<label>Crop Type</label><select id="crop"><option>Tomato</option><option>Chilli</option><option>Groundnut</option><option>Vegetables</option></select>
+<label>Soil Type</label><select><option>Loamy</option><option>Sandy</option><option>Clay</option></select>
+<label>Season</label><select><option>Kharif</option><option>Rabi</option><option>Summer</option></select>
+<button class="btn" onclick="recommend()">Get Recommendation</button>
+<div id="result" class="card" style="display:none"><h3>🌾 Recommended: Rice Straw Mulch</h3><p>Suitable for moisture retention and weed suppression.</p><span class="tag">Biodegradable</span><span class="tag">Low waste</span><span class="tag">Natural</span></div>
+</section>
+
+<section id="types" class="screen"><h2>🌾 Eco-Mulch Types</h2>
+<div class="card"><h3>🌾 Rice Straw</h3><p>Useful agricultural residue; helps cover soil and reduce evaporation.</p></div>
+<div class="card"><h3>🥥 Coconut Fiber</h3><p>Durable natural fiber that can provide soil coverage.</p></div>
+<div class="card"><h3>🍌 Banana Fiber</h3><p>Natural crop residue that can be processed for biodegradable mulch.</p></div>
+<div class="card"><h3>🍂 Dry Leaves</h3><p>Simple organic mulch option for suitable crops.</p></div>
+</section>
+
+<section id="monitor" class="screen"><h2>💧 Soil & Field Monitor</h2>
+<div class="card"><div class="stat"><span>Soil Moisture</span><b id="moist">32%</b></div><div class="stat"><span>Soil Temperature</span><b>28°C</b></div><div class="stat"><span>Field Status</span><b>🌱 Healthy</b></div></div>
+<button class="btn" onclick="updateMoisture()">🔄 Refresh Sensor Data</button>
+<p style="font-size:13px;color:#667">Prototype mode: sensor values are simulated. Real IoT sensors can be connected later.</p>
+</section>
+
+<section id="weather" class="screen"><h2>☀️ Weather</h2><div class="card"><h3>Today's Field Weather</h3><div class="stat"><span>Temperature</span><b>28°C</b></div><div class="stat"><span>Rain Chance</span><b>30%</b></div><div class="stat"><span>Advice</span><b>Check soil moisture</b></div></div></section>
+
+<section id="impact" class="screen"><h2>📈 Impact Tracker</h2>
+<div class="card"><div class="stat"><span>💧 Water saved</span><b>12,450 L</b></div><div class="stat"><span>🌿 Weed control</span><b>85%</b></div><div class="stat"><span>🌍 Plastic avoided</span><b>8.5 kg</b></div><div class="stat"><span>🌱 Soil health</span><b>Good</b></div></div>
+</section>
+
+<section id="market" class="screen"><h2>🛒 AgriGrow Marketplace</h2>
+<div class="card"><h3>🌾 Rice Straw Mulch</h3><p>Eco-friendly field coverage material</p><button class="btn" onclick="toast('Added to request list ✓')">Request Material</button></div>
+<div class="card"><h3>🥥 Coconut Fiber Mulch</h3><p>Natural fiber-based mulch material</p><button class="btn" onclick="toast('Added to request list ✓')">Request Material</button></div>
+</section>
+
+<section id="profile" class="screen"><h2>👤 Farmer Profile</h2><div class="card"><h3>My Farm</h3><p>Manage crop, field and language preferences.</p><button class="btn" onclick="toast('Profile saved ✓')">Save Profile</button></div></section>
+
+<nav>
+<button onclick="show('home')" id="n-home" class="active"><b>⌂</b>Home</button>
+<button onclick="show('recommend')" id="n-recommend"><b>💡</b>Recommend</button>
+<button onclick="show('monitor')" id="n-monitor"><b>💧</b>Monitor</button>
+<button onclick="show('impact')" id="n-impact"><b>📈</b>Impact</button>
+<button onclick="show('profile')" id="n-profile"><b>👤</b>Profile</button>
+</nav>
+<div id="toast" class="toast"></div>
+</div>
+<script>
+function show(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ let n=document.getElementById('n-'+id); if(n)n.classList.add('active');
+ window.scrollTo(0,0);
+}
+function recommend(){document.getElementById('result').style.display='block';toast('Recommendation generated ✓')}
+function updateMoisture(){document.getElementById('moist').textContent=(28+Math.floor(Math.random()*10))+'%';toast('Sensor data refreshed ✓')}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',1800)}
+</script>
+</body>
+</html>
